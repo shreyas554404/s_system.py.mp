@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Salary Slip</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .slip-header {
+            text-align: center;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .slip-section {
+            margin-bottom: 20px;
+        }
+        .slip-section h3 {
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .slip-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .slip-row.total {
+            background: #f5f5f5;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .button-group a {
+            flex: 1;
+        }
+        .button-group button {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="salary-slip" style="max-width: 600px;">
+        <div class="slip-header">
+            <h1>SALARY SLIP</h1>
+        </div>
+
+        {% if data %}
+            <div class="slip-section">
+                <h3>Employee Details</h3>
+                <div class="slip-row">
+                    <span>Employee ID:</span>
+                    <span>{{ data['id'] }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Name:</span>
+                    <span>{{ data['name'] }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Position:</span>
+                    <span>{{ data['role'] }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>PF Number:</span>
+                    <span>{{ data['pf_no'] }}</span>
+                </div>
+            </div>
+
+            <div class="slip-section">
+                <h3>Salary Breakdown</h3>
+                <div class="slip-row">
+                    <span>Gross Salary:</span>
+                    <span>${{ "%.2f" | format(data['salary']) }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Working Days:</span>
+                    <span>{{ data['days'] }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Leaves:</span>
+                    <span>{{ data['leaves'] }}</span>
+                </div>
+            </div>
+
+            <div class="slip-section">
+                <h3>Deductions</h3>
+                <div class="slip-row">
+                    <span>Tax:</span>
+                    <span>${{ "%.2f" | format(data['tax']) }}</span>
+                </div>
+                <div class="slip-row">
+                    <span>PF Amount:</span>
+                    <span>${{ "%.2f" | format(data['pf_amount']) }}</span>
+                </div>
+            </div>
+
+            <div class="slip-row total">
+                <span>Net Salary (After Tax):</span>
+                <span>${{ "%.2f" | format(net_salary) }}</span>
+            </div>
+
+            <div class="button-group">
+                <a href="/download_pdf/{{ data[0] }}"><button class="download-btn" style="background: #ed8936; flex: 1;">Download as PDF</button></a>
+            </div>
+        {% else %}
+            <p style="color: #e53e3e; font-weight: bold;">Salary slip not found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

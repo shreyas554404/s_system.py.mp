@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ role.capitalize() }} Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-group a {
+            flex: 1;
+            text-decoration: none;
+        }
+        .btn-group button {
+            width: 100%;
+        }
+        .back-btn {
+            background: #999 !important;
+        }
+        .back-btn:hover {
+            background: #777 !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>{{ role.capitalize() }} Login</h2>
+        {% if error %}
+            <p style="color: red; font-weight: bold;">{{ error }}</p>
+        {% endif %}
+        
+        <form method="POST">
+            {% if role == "admin" %}
+                <input name="username" placeholder="Admin Username" required><br>
+                <input name="password" type="password" placeholder="Password" required><br>
+            {% else %}
+                <input name="username" placeholder="Employee ID" required><br>
+                <input name="password" type="password" placeholder="Password" required><br>
+            {% endif %}
+            <button type="submit">Login</button>
+        </form>
+        
+        <div class="btn-group" style="margin-top: 20px;">
+            {% if role == "admin" %}
+                <a href="/login/employee"><button style="background: #764ba2;">Employee Login</button></a>
+            {% else %}
+                <a href="/login/admin"><button style="background: #764ba2;">Admin Login</button></a>
+            {% endif %}
+            <a href="/"><button class="back-btn">Back</button></a>
+        </div>
+    </div>
+</body>
+</html>
